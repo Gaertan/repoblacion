@@ -13,7 +13,7 @@ public class Consola {
 	//(por ejemplo en vez de anchura<1001,haber hecho : anchura<(Bosque.getMAX_ANCHURA()+1)
 	
 	
-	public int leerAnchura() {
+	public static int leerAnchura() {
 		boolean anchuraCorrecta = false;
 		int anchura = -1;
 		do {
@@ -29,7 +29,7 @@ public class Consola {
 	}
 	
 	
-	public int leerAltura() {
+	public static int leerAltura() {
 		boolean alturaCorrecta = false;
 		int altura = -1;
 		do {
@@ -44,7 +44,7 @@ public class Consola {
 	}
 	
 	
-	public int leePoblacion() {
+	public static int leePoblacion() {
 		boolean poblacionCorrecta = false;
 		int poblacion = -1;
 		do {System.out.println("Por favor teclee el valor de la poblacion a replantar(entre 0 y el valor del perimetro)" );
