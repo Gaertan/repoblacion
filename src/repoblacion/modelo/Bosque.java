@@ -12,7 +12,7 @@ public class Bosque {
 	
 	private Arbol arbolMasAlejado;
 	private Arbol arbolMasCentrado;
-	private Random generador;
+	private Random generador = new Random();
 	private int ancho;
 	private int alto;
 	
@@ -29,19 +29,20 @@ public class Bosque {
 	
 	public void setArbolMasAlejado(Arbol arbolMasAlejado) {this.arbolMasAlejado = arbolMasAlejado;}
 	public void setArbolMasCentrado(Arbol arbolMasCentrado) {this.arbolMasCentrado = arbolMasCentrado;}
-	public void setAncho(int ancho) {if(ancho<=this.ancho)this.ancho = ancho;else throw new IllegalArgumentException("ERROR: Anchura no válida.");}
-	public void setAlto(int alto) {if(alto<=this.alto)this.alto = alto;else throw new IllegalArgumentException("ERROR: Altura no válida.");}
+	public void setAncho(int ancho) {if(ancho<=MAX_ANCHURA)this.ancho = ancho;else throw new IllegalArgumentException("ERROR: Anchura no válida.");}
+	public void setAlto(int alto) {if(alto<=MAX_ALTURA)this.alto = alto;else throw new IllegalArgumentException("ERROR: Altura no válida.");}
 	public void setArboles(Arbol[] arboles) {if(arboles!=null)	this.arboles = arboles;	}
 	public void checkPoblacion(int poblacion) throws IllegalArgumentException {
-		if(poblacion<= (2 * (ancho+alto) )  );
+		if(poblacion>= (2 * (ancho+alto) )  ) {throw new IllegalArgumentException("ERROR: La población no puede superar el perímetro del bosque.");};
 		if(poblacion == 0) {throw new IllegalArgumentException("ERROR: La población debe ser mayor que cero.");}
-		else throw new IllegalArgumentException("ERROR: La población no puede superar el perímetro del bosque.");}
+ }
 	
 	public Bosque(int ancho,int alto,int poblacion) throws IllegalArgumentException {
 		
 		setAncho(ancho);setAlto(alto);checkPoblacion(poblacion);
-		repoblar();
+		this.arboles = new Arbol[poblacion];
 		
+		repoblar();
 		
 	}
 	
@@ -54,13 +55,14 @@ public class Bosque {
 		//estos valores llenan la array contenedor(tamaño maximo igual a la constante definida,escalable)
 	
 		
-		Especie[] especieArr = Especie.values();
+		/*Especie[] especieArr = Especie.values();
 		Especie[] especieRand = new Especie[MAX_ESPECIES];
-		for(int i=0;i<especieRand.length;i++) {especieRand[i] =	especieArr [new Random().nextInt (Especie.values().length) ];}
+		for(int i=0;i<especieRand.length;i++) {especieRand[i] =	especieArr [ new Random().nextInt (Especie.values().length) ];}*/
 		
 		//recorrer array  generando arboles con posiciones aleatorias
-
-		
+		Especie[] especieArr =Especie.values();
+		Especie[] especieRand = new Especie[MAX_ESPECIES];
+		for(int i =0;i<especieRand.length;i++) {especieRand[i] = especieArr[ (generador.nextInt(Especie.values().length)) ];}
 		
 		boolean especieCorrecta = true;
 		boolean posicionLlena = false;
@@ -78,27 +80,29 @@ public class Bosque {
 			do {
 			xTest = generador.nextDouble(-ancho/2, ancho/2);
 			yTest = generador.nextDouble(-alto/2, alto/2);
-			if(  ( xTest==(arboles[i].getPosicion().getX()) ) && ( yTest==(arboles[i].getPosicion().getY()) )    ) {posicionLlena = true;}
+			if(this.arboles[i]!=null) {
+				if(  ( xTest==(arboles[i].getPosicion().getX()) ) && ( yTest==(arboles[i].getPosicion().getY()) )    ) {posicionLlena = true;}	
+			}
+		
 			}while(posicionLlena == true);
 			Posicion posicionAPasar = new Posicion(xTest,yTest);
 			
 			
 			//obtiene la especie del arbol anterior del array como dice el enunciado			
-			 prevEspecie = arboles[(i-1)].getEspecie();
+			if( (i-1) >=0 )prevEspecie = arboles[(i-1)].getEspecie();else prevEspecie = null;
 			//genera una especie aleatoria dentro de las escogidas para replantar mientras sea incompatible con la ocurrencia anterior
 			do {
-				especieTest = especieRand[generador.nextInt(especieRand.length)];
+				especieTest = especieRand[ generador.nextInt(0,especieRand.length) ];
 				if(especieTest==Especie.ALAMO &&( prevEspecie==Especie.CASTANO||prevEspecie==Especie.CIPRES||prevEspecie==Especie.OLIVO) ) {especieCorrecta = false;}
-				if(especieTest==Especie.OLIVO &&( prevEspecie==Especie.ALAMO||prevEspecie==Especie.ENCINA) )
-				{especieCorrecta = false;}				
+				if(especieTest==Especie.OLIVO &&( prevEspecie==Especie.ALAMO||prevEspecie==Especie.ENCINA) ){especieCorrecta = false;}		
+					
 				
 				
 			}while(especieCorrecta == false);
 
-			
+
 			
 			arboles[i] = new Arbol (posicionAPasar, especieTest);
-			
 		}
 
 		
@@ -121,14 +125,14 @@ public class Bosque {
 		for(int i=0;i<arboles.length;i++) {
 			
 				try {
-					if(arboles[i].getPosicion().distancia(centro)<arbolMasCercanoHelper.getPosicion().distancia(centro)) {arbolMasCercanoHelper = arboles[i];}
+					if(arboles[i].getPosicion().distancia(centro)<arbolMasCercanoHelper.getPosicion().distancia(centro)) {arbolMasCercanoHelper =  arboles[i];}
 					}
 				catch(Exception e) {e.getMessage();}}
 		
 		for(int i=0;i<arboles.length;i++) {
 			
 			try {
-				if(arboles[i].getPosicion().distancia(perimetro)<arbolMasAlejadoHelper.getPosicion().distancia(perimetro)) {arbolMasAlejadoHelper = arboles[i];}
+				if(arboles[i].getPosicion().distancia(centro)>arbolMasAlejadoHelper.getPosicion().distancia(perimetro)) {arbolMasAlejadoHelper = arboles[i];}
 				}
 			catch(Exception e) {e.getMessage();}}
 		

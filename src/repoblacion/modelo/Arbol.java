@@ -55,7 +55,7 @@ public class Arbol {
 
 	@Override
 	public String toString() {
-		return String.format("especie=%s, posicion=(%s)", especie,posicion);
+		return String.format("especie=%s, posicion=(%s)", especie.toString(),posicion);
 	}
 
 

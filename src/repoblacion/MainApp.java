@@ -16,22 +16,23 @@ public class MainApp {
 		int poblacion;
 
 		System.out.println("Bienvenido a la app de repoblación");
-		System.out.println("a continuacion se le pedirán las dimensiones del bosque y arboles a replantar");
-		
-		anchura = Consola.leerAnchura();
-		altura = Consola.leerAltura();
-		poblacion = Consola.leePoblacion();
-		
-		
-		try {
-			bosque = new Bosque(anchura, altura, poblacion);
-		} catch (IllegalArgumentException e) {
-			e.printStackTrace();
-		}
+		do {System.out.println("a continuacion se le pedirán las dimensiones del bosque y arboles a replantar");			
+			anchura = Consola.leerAnchura();
+			altura = Consola.leerAltura();
+			poblacion = Consola.leePoblacion();
+
+			try {bosque = new Bosque(anchura, altura, poblacion);
+			} catch (IllegalArgumentException e) {e.printStackTrace();}
+			}while(bosque == null);
+
 		bosque.realizarCalculos();
 		
-		System.out.println("el arbol mas alejado es " + bosque.getArbolMasAlejado());
-		System.out.println("el arbol mas centrado es " + bosque.getArbolMasCentrado());
+		
+		System.out.println("el arbol mas alejado es " + bosque.getArbolMasAlejado().toString());
+		System.out.println("el arbol mas centrado es " + bosque.getArbolMasCentrado().toString());
+		System.out.println("Pues ya estaria");
+		
+
 	}
 
 }

@@ -19,7 +19,7 @@ public class Consola {
 		do {
 			System.out.println("Por favor teclee el valor de la anchura(entre 0 y 1000)" );
 			anchura = Entrada.entero();
-			if(anchura>0&&anchura<1001) {anchuraCorrecta = true;}
+			if(anchura>0&&anchura<1000) {anchuraCorrecta = true;}
 			
 		}
 		while(!anchuraCorrecta);
@@ -35,7 +35,7 @@ public class Consola {
 		do {
 			System.out.println("Por favor teclee el valor de la altura(entre 0 y 500)" );
 			altura = Entrada.entero();
-			if(altura>0&&altura<1001) {alturaCorrecta = true;}
+			if(altura>0&&altura<500) {alturaCorrecta = true;}
 			
 		}
 		while(!alturaCorrecta);

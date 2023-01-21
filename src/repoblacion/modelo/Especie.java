@@ -9,10 +9,10 @@ public enum Especie {ALAMO("álamo"),ENCINA("encina"),CASTANO("castaño"),CIPRES
 	private String cadenaAmostrar;
 	
 	
-	private Especie(String caadenaAmostrar) {}
+	private Especie(String cadenaAmostrar) {this.cadenaAmostrar=cadenaAmostrar;}
 
 
-public String toString() {return cadenaAmostrar;}
+public String toString() {return this.cadenaAmostrar;}
 
 
 
